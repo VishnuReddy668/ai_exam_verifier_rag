@@ -1,0 +1,14 @@
+Title: Principles of Classical Mechanics and Thermodynamics
+
+**Newton's Laws of Motion**
+These three laws form the basis of classical mechanics.
+- **First Law (Inertia):** An object will remain at rest or in uniform motion in a straight line unless acted upon by an external force. This property of an object to resist changes in its state of motion is called inertia.
+- **Second Law (Acceleration):** The force acting on an object is equal to the mass of that object times its acceleration (F=ma). This means that the acceleration of an object is directly proportional to the net force and inversely proportional to its mass.
+- **Third Law (Action-Reaction):** For every action, there is an equal and opposite reaction. If object A exerts a force on object B, then object B simultaneously exerts a force of equal magnitude and opposite direction on object A.
+
+**The Laws of Thermodynamics**
+Thermodynamics is the study of heat, work, and energy.
+- **Zeroth Law:** If two thermodynamic systems are each in thermal equilibrium with a third one, then they are in thermal equilibrium with each other. This law defines the concept of temperature.
+- **First Law (Conservation of Energy):** Energy cannot be created or destroyed in an isolated system. It can only change from one form to another. The change in internal energy of a system is equal to the heat added to the system minus the work done by the system.
+- **Second Law (Entropy):** The total entropy of an isolated system can never decrease over time. Entropy is a measure of the amount of thermal energy per unit temperature that is not available to do useful work; it is also understood as a measure of a system's molecular disorder or randomness.
+- **Third Law:** As the temperature of a system approaches absolute zero, its entropy approaches a constant minimum value. The entropy of a perfect crystal at absolute zero (0 Kelvin) is exactly zero.

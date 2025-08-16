@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Exam Answer Verifier | RAG Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #4f46e5;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4f46e5 }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .feedback-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .feedback-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .vector-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                        <i data-feather="brain" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">AI Exam Verifier</h1>
+                        <p class="text-blue-100">Powered by RAG Architecture</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-lg">
+                        <span class="text-sm">Vector DB: Online</span>
+                        <div class="w-2 h-2 bg-green-400 rounded-full inline-block ml-2 vector-animation"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">
+                    Intelligent Answer Verification
+                    <span class="text-blue-600">with RAG</span>
+                </h2>
+                <p class="text-xl text-gray-600 mb-8">
+                    Our advanced system uses retrieval-augmented generation to compare student answers 
+                    with academic content, providing detailed feedback on accuracy, completeness, and structure.
+                </p>
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                        <i data-feather="database" class="w-8 h-8 mx-auto mb-2 text-blue-600"></i>
+                        <div class="text-2xl font-bold text-gray-800">10K+</div>
+                        <div class="text-sm text-gray-600">Reference Documents</div>
+                    </div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                        <i data-feather="zap" class="w-8 h-8 mx-auto mb-2 text-green-600"></i>
+                        <div class="text-2xl font-bold text-gray-800">95%</div>
+                        <div class="text-sm text-gray-600">Accuracy Rate</div>
+                    </div>
+                    <div class="text-center p-4 bg-white rounded-lg shadow-sm">
+                        <i data-feather="clock" class="w-8 h-8 mx-auto mb-2 text-purple-600"></i>
+                        <div class="text-2xl font-bold text-gray-800"><3s</div>
+                        <div class="text-sm text-gray-600">Response Time</div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/90eb3d63-b4db-4f3b-b8f0-d91fd999d8ca.png" alt="Modern AI-powered educational technology interface showing neural networks, data visualization dashboards, and student analytics on multiple screens in a bright, futuristic classroom setting" class="rounded-lg shadow-xl" />
+                <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm font-medium">AI Processing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Application -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Navigation Tabs -->
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6">
+                    <button onclick="showTab('verify')" class="tab-btn py-4 px-2 border-b-2 border-blue-500 text-blue-600 font-medium" id="verify-tab">
+                        Answer Verification
+                    </button>
+                  <!--  <button onclick="showTab('analytics')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" id="analytics-tab">
+                        Analytics Dashboard
+                    </button>
+                    <button onclick="showTab('knowledge')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" id="knowledge-tab">
+                        Knowledge Base
+                    </button> -->
+                </nav>
+            </div>
+
+            <!-- Verification Tab -->
+            <div id="verify-content" class="tab-content p-6">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Input Section -->
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                            <select id="subject" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option>Computer Science</option>
+                                <option>Mathematics</option>
+                                <option>Physics</option>
+                                <option>Chemistry</option>
+                                <option>Biology</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Question</label>
+                            <textarea id="question" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter the exam question here..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Student Answer</label>
+                            <textarea id="answer" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter the student's answer here..."></textarea>
+                        </div>
+                        
+                        <button onclick="verifyAnswer()" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2">
+                            <i data-feather="search" class="w-5 h-5"></i>
+                            <span>Verify Answer with RAG</span>
+                        </button>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="results-section" class="space-y-6">
+                        <div class="text-center text-gray-500 py-12">
+                            <i data-feather="file-text" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                            <p>Submit an answer to see AI-powered verification results</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Animation -->
+                <div id="processing" class="hidden text-center py-8">
+                    <div class="inline-flex items-center space-x-4">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span class="text-lg font-medium text-gray-700">Processing with RAG Architecture...</span>
+                    </div>
+                    <div class="mt-4 space-y-2">
+                        <div id="step1" class="text-sm text-gray-600">🔍 Retrieving relevant documents from vector database...</div>
+                        <div id="step2" class="text-sm text-gray-600 hidden">🤖 Generating evaluation with LLM...</div>
+                        <div id="step3" class="text-sm text-gray-600 hidden">📊 Analyzing answer completeness and accuracy...</div>
+                    </div>
+                </div>
+            </div>
+
+       <!--     // Analytics Tab
+            <div id="analytics-content" class="tab-content p-6 hidden">
+                <div class="grid lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100">Total Verifications</p>
+                                <p class="text-3xl font-bold">2,847</p>
+                            </div>
+                            <i data-feather="check-circle" class="w-10 h-10 text-blue-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100">Average Score</p>
+                                <p class="text-3xl font-bold">87.5%</p>
+                            </div>
+                            <i data-feather="trending-up" class="w-10 h-10 text-green-200"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100">Response Time</p>
+                                <p class="text-3xl font-bold">2.1s</p>
+                            </div>
+                            <i data-feather="clock" class="w-10 h-10 text-purple-200"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Subject Performance</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">Computer Science</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">92%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">Mathematics</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 88%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">88%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">Physics</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4">Recent Verifications</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-medium text-sm">Machine Learning Concepts</p>
+                                    <p class="text-xs text-gray-600">Computer Science</p>
+                                </div>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">95%</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-medium text-sm">Calculus Integration</p>
+                                    <p class="text-xs text-gray-600">Mathematics</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">78%</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-medium text-sm">Quantum Mechanics</p>
+                                    <p class="text-xs text-gray-600">Physics</p>
+                                </div>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">91%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        -->
+            <!-- //Knowledge Base Tab 
+            <div id="knowledge-content" class="tab-content p-6 hidden">
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-xl font-semibold mb-6">Vector Database Statistics</h3>
+                        <div class="grid md:grid-cols-2 gap-4 mb-8">
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <div class="flex items-center space-x-3">
+                                    <i data-feather="database" class="w-8 h-8 text-blue-600"></i>
+                                    <div>
+                                        <p class="text-2xl font-bold text-blue-600">10,247</p>
+                                        <p class="text-sm text-blue-700">Documents Indexed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <div class="flex items-center space-x-3">
+                                    <i data-feather="layers" class="w-8 h-8 text-green-600"></i>
+                                    <div>
+                                        <p class="text-2xl font-bold text-green-600">1,536</p>
+                                        <p class="text-sm text-green-700">Vector Dimensions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="text-lg font-semibold mb-4">Subject Distribution</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Computer Science</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 35%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">3,586 docs</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Mathematics</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 28%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">2,869 docs</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span class="font-medium">Physics</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 22%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600">2,254 docs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">API Status</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <span class="text-sm font-medium">Vector Search</span>
+                                <span class="text-green-600 text-sm">Online</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <span class="text-sm font-medium">LLM Evaluation</span>
+                                <span class="text-green-600 text-sm">Online</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <span class="text-sm font-medium">FastAPI Backend</span>
+                                <span class="text-green-600 text-sm">Online</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                            <h5 class="font-semibold mb-2">System Health</h5>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span>CPU Usage</span>
+                                    <span>23%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 23%"></div>
+                                </div>
+                                <div class="flex justify-between text-sm mt-2">
+                                    <span>Memory</span>
+                                    <span>67%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-600 h-2 rounded-full" style="width: 67%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    -->
+    </section> 
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">AI Exam Verifier</h3>
+                    <p class="text-gray-300">Revolutionizing education with AI-powered answer verification using state-of-the-art RAG architecture.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Features</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• Real-time answer verification</li>
+                        <li>• Vector database integration</li>
+                        <li>• LLM-powered evaluation</li>
+                        <li>• Detailed feedback generation</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Technology Stack</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li>• FastAPI REST API</li>
+                        <li>• Pinecone/Chroma Vector DB</li>
+                        <li>• OpenAI/Anthropic LLMs</li>
+                        <li>• React/Vue.js Frontend</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+ <script>
+        function showResults(data) {
+            const score = data.overall_score || 0;
+            const accuracy = data.accuracy || { rating: 'N/A', feedback: 'N/A' };
+            const completeness = data.completeness || { rating: 'N/A', feedback: 'N/A' };
+            const structure = data.structure || { rating: 'N/A', feedback: 'N/A' };
+            const aiFeedback = data.ai_feedback || { strengths: 'N/A', suggestions: 'N/A' };
+            const sources = data.retrieved_sources || ["N/A"];
+
+            const getRatingClass = (rating) => {
+                if (typeof rating !== 'string') return 'bg-gray-100 text-gray-800';
+                const safeRating = rating.toLowerCase();
+                if (safeRating === 'excellent') return 'bg-green-100 text-green-800';
+                if (safeRating === 'good') return 'bg-yellow-100 text-yellow-800';
+                return 'bg-red-100 text-red-800';
+            };
+
+            const resultsHTML = `
+                <div class="space-y-6">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div><h3 class="text-xl font-bold">Overall Score</h3><p class="text-blue-100">Based on RAG analysis</p></div>
+                            <div class="text-4xl font-bold">${score}%</div>
+                        </div>
+                    </div>
+                    <div class="grid gap-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2"><h4 class="font-semibold text-gray-800">Accuracy</h4><span class="${getRatingClass(accuracy.rating)} px-3 py-1 rounded-full text-sm">${accuracy.rating}</span></div>
+                            <p class="text-sm text-gray-600">${accuracy.feedback}</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2"><h4 class="font-semibold text-gray-800">Completeness</h4><span class="${getRatingClass(completeness.rating)} px-3 py-1 rounded-full text-sm">${completeness.rating}</span></div>
+                            <p class="text-sm text-gray-600">${completeness.feedback}</p>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2"><h4 class="font-semibold text-gray-800">Structure & Clarity</h4><span class="${getRatingClass(structure.rating)} px-3 py-1 rounded-full text-sm">${structure.rating}</span></div>
+                            <p class="text-sm text-gray-600">${structure.feedback}</p>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="font-semibold text-blue-800 mb-3 flex items-center">AI-Generated Feedback</h4>
+                        <div class="text-blue-700 space-y-2"><p><strong>Strengths:</strong> ${aiFeedback.strengths}</p><p><strong>Suggestions:</strong> ${aiFeedback.suggestions}</p></div>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">Retrieved Sources</h4>
+                        <div class="space-y-2">${sources.map(src => `<div class="text-sm"><span>${src}</span></div>`).join('')}</div>
+                    </div>
+                </div>`;
+            
+            document.getElementById('results-section').innerHTML = resultsHTML;
+        }
+
+        async function verifyAnswer() {
+            const question = document.getElementById('question').value;
+            const answer = document.getElementById('answer').value;
+            const subject = document.getElementById('subject').value;
+            
+            if (!question || !answer) {
+                alert('Please enter both question and answer');
+                return;
+            }
+
+            const resultsSection = document.getElementById('results-section');
+            const processingSection = document.getElementById('processing');
+            
+            processingSection.classList.remove('hidden');
+            resultsSection.innerHTML = '';
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, answer, subject }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                showResults(data);
+
+            } catch (error) {
+                console.error("API call failed:", error);
+                resultsSection.innerHTML = `<p class="text-red-500 text-center">Failed to get verification results. Please check the console.</p>`;
+            } finally {
+                processingSection.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+

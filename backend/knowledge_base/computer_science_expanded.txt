@@ -1,0 +1,22 @@
+Title: Core Concepts in Computer Science
+
+**Data Structures**
+A data structure is a way of organizing and storing data in a computer so that it can be accessed and modified efficiently.
+- **Arrays:** A collection of items stored at contiguous memory locations. Elements can be accessed directly using an index.
+- **Linked Lists:** A linear collection of data elements whose order is not given by their physical placement in memory. Each element (node) points to the next.
+- **Stacks:** A linear data structure that follows the Last-In, First-Out (LIFO) principle. Operations are push (add to top) and pop (remove from top).
+- **Queues:** A linear structure that follows the First-In, First-Out (FIFO) principle. Operations are enqueue (add to rear) and dequeue (remove from front).
+- **Trees:** A hierarchical structure with a root value and subtrees of children with a parent node. A Binary Tree is a common type where each node has at most two children.
+- **Graphs:** A non-linear data structure consisting of nodes (or vertices) and edges connecting them. Used to model networks and relationships.
+
+**Algorithms**
+An algorithm is a step-by-step procedure for calculations or problem-solving.
+- **Sorting Algorithms:** Used to rearrange a given array or list of elements according to a comparison operator. Common examples include Bubble Sort (simple but inefficient), Merge Sort (efficient, divide-and-conquer), and Quick Sort (often the fastest in practice).
+- **Big O Notation:** Describes the complexity of an algorithm. It characterizes how the runtime or space requirements grow as the input size increases. For example, O(1) is constant time, O(n) is linear time, and O(n^2) is quadratic time.
+
+**Object-Oriented Programming (OOP)**
+OOP is a programming paradigm based on the concept of "objects", which can contain data and code.
+- **Encapsulation:** The bundling of data and the methods that operate on that data into a single unit (an object). It restricts direct access to some of an object's components.
+- **Inheritance:** A mechanism where a new class inherits properties and behaviors from an existing class.
+- **Polymorphism:** The ability of a message to be displayed in more than one form. For example, a parent class reference can hold a child class object.
+- **Abstraction:** Hiding complex implementation details and showing only the essential features of the object.

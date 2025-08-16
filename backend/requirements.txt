@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+groq                  # <--- ADD THIS
+chromadb
+sentence-transformers
+gunicorn
+# google-generativeai # <--- You can remove this line

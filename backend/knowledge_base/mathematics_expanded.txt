@@ -1,0 +1,14 @@
+Title: Fundamentals of Calculus and Linear Algebra
+
+**Calculus**
+Calculus is the mathematical study of continuous change. It has two main branches.
+- **Differential Calculus:** Focuses on the concept of the derivative, which represents the instantaneous rate of change of a function. The process of finding the derivative is called differentiation. It is used to find the slope of a curve, velocity and acceleration of a moving object, and to solve optimization problems by finding maxima and minima.
+- **Integral Calculus:** Focuses on the concept of the integral, which can be interpreted as the area under the curve of a function's graph. The process of finding the integral is called integration. It is used to calculate areas, volumes, and accumulated quantities.
+- **The Fundamental Theorem of Calculus:** This is the core theorem that links the concepts of differentiating and integrating a function. It states that differentiation and integration are inverse operations.
+
+**Linear Algebra**
+Linear algebra is the branch of mathematics concerning linear equations, linear functions, and their representations through matrices and vector spaces.
+- **Vectors:** Objects that have both a magnitude and a direction. They can be represented as lists of numbers and are used to represent points in space.
+- **Matrices:** Rectangular arrays of numbers arranged in rows and columns. Matrices are used to represent linear transformations and to solve systems of linear equations.
+- **Matrix Operations:** Common operations include matrix addition, scalar multiplication, and matrix multiplication. Matrix multiplication is fundamental to many areas, including computer graphics and machine learning, particularly in neural networks.
+- **Systems of Linear Equations:** A collection of one or more linear equations involving the same set of variables. Linear algebra provides methods, such as Gaussian elimination, to find solutions to these systems.
