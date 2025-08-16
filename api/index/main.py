@@ -3,10 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rag_verifier import RAGVerifier
 
-app = FastAPI()
+api = FastAPI()
 
 # Allow requests from your frontend (important for development)
-app.add_middleware(
+api.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], # Allows all origins
     allow_credentials=True,
@@ -23,11 +23,11 @@ class VerificationRequest(BaseModel):
     answer: str
     subject: str
 
-@app.get("/")
+@api.get("/")
 def read_root():
     return {"status": "AI Verifier API is running."}
 
-@app.post("/verify")
+@api.post("/verify")
 def handle_verification(request: VerificationRequest):
     """Receives data from the frontend and returns the AI's evaluation."""
     result = verifier.verify_answer(request.question, request.answer)
