@@ -115,7 +115,7 @@ class RAGVerifier:
         try:
             chat_completion = self.client.chat.completions.create(
                 messages=[{"role": "user", "content": prompt}],
-                model="llama3-8b-8192",
+                model="gemma2-9b-it",
             )
             
             # Check if the response was blocked by safety filters or is otherwise empty
