@@ -3,7 +3,7 @@ fastapi
 pydantic
 python-dotenv
 groq                  # <--- ADD THIS
-chromadb
+#chromadb
 sentence-transformers
 #gunicorn
 # google-generativeai # <--- You can remove this line
